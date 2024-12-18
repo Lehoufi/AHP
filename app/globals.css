@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+
+  --color:#7C3AED;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+html {
+  scroll-behavior: smooth;
+}
+::selection{
+  background-color: #7C3AED;
+  color: white;
+}
+
+
+*{
+  box-sizing: border-box;
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background-color: #aaa; 
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #888; 
+  }
+
+ 
+}
+.ara{
+  font-family: 'Tilt Neon', sans-serif;
+}
+.sans{
+  font-family: "Poppins", sans-serif;
+
+}
+.fx{
+  display: flex;
+  align-items: center;
+}
+
+.activated{
+  background-color: rgba(127, 255, 212, 0.349);
+}
+
+
+body{
+  color: #323235;
+  background-color: #f6f6f6;
+  background-image: none;
+  flex-direction: column;
+  align-items: stretch;
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 140%;
+  text-decoration: none;
+  display: flex;
+  scroll-behavior: smooth;
+
+}
+.she {
+  position: relative;
+}
+
+.she::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 99%;
+  background-image: url(/back.webp);
+  background-position: center;
+  background-repeat: repeat;
+  opacity: 0.7; 
+}
+.menu{
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition-duration: 0.5s;
+}
+.menu span{
+  position: absolute;
+  background: #0f172a;
+  height: 2px;
+  width: 38px;
+  border-radius: 8px;
+  transition: .4s;
+  left: 8px;
+}
+.menu span:nth-child(1){
+  transform: translateY(-8px);
+  height: 2px;
+  width: 18px;
+  left: 8px;
+}
+.menu span:nth-child(3){
+  transform: translateY(8px);
+  height: 2px;
+  width: 24px;
+  left: 8px;
+}
+
+.menu.active span:nth-child(1){
+  transform: rotate(220deg);
+  width: 24px;
+  left: 12px;
+}
+.menu.active span:nth-child(2){
+  transform: translateX(60px);
+}
+.menu.active span:nth-child(3){
+  transform: rotate(130deg);
+  width: 24px;
+  left: 12px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-top-color: #7C3AED;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media ((max-width: 915px)) {
+  .card{
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    min-width:unset;
+    flex-direction: column-reverse;
+    width: 79%;
+  }
+  .imgs{
+    height: auto;
+     max-width:100%; 
+    -o-object-position: 0% 0%;
+    bottom: 0px;
+    right: 0px;
+    margin-bottom: 10px;
+  }
+  .lisr{
+    align-items: center;
+  }
+}
+@media ((max-width: 392px)) {
+.menu{
+  width: 40px;
+  height: 40px;
+}
+}
+
+/* Add a transition for the fade-out effect */
+.node {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.node.fade-out {
+  opacity: 0;
+}
+
+.rd3t-node text {
+  font-weight: normal !important;
+}
+.rd3t-node{
+  cursor: pointer;
+  fill: #777;
+  stroke: #000;
+  strokeWidth: 1px !important;
+}
