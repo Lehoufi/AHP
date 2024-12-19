@@ -16,6 +16,7 @@ const AHPTree = ({ treeData }) => {
     lvl3: [], 
   });
   const [ranking,setranking]=useState(false)
+  
   const sendDataToDjango = async () => {
     setranking(true); 
 
@@ -456,7 +457,7 @@ pathFunc={(linkData, orientation) => {
       {currentLevelNodes.map((_, colIndex) => (
         <td key={colIndex} className="border p-3 text-center">
           {rowIndex >= colIndex ? (
-            <span>{Math.round(1 / formData[currentLevel]?.[colIndex]?.[rowIndex] || 1)}</span>
+            <span>{(1 / formData[currentLevel]?.[colIndex]?.[rowIndex] || 1).toFixed(2)}</span>
           ) : (
             <select
               className="border  border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -509,7 +510,7 @@ Object.keys(currentLevelNodes).map((parent,index) => (
           {currentLevelNodes[parent].map((_, colIndex) => (
             <td key={colIndex} className="border p-3 text-center">
               {rowIndex >= colIndex ? (
-                <span>{Math.round(1 / formData[parent]?.[colIndex]?.[rowIndex] || 1)}</span>
+                <span>{(1 / formData[parent]?.[colIndex]?.[rowIndex] || 1).toFixed(2)}</span>
               ) : (
                 <select
                   className="border  border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -564,7 +565,7 @@ Array.from(currentLevelNodes).map(([parent, alts],index) => (
           {alts.map((_, colIndex) => (
             <td key={colIndex} className="border p-3 text-center">
               {rowIndex >= colIndex ? (
-                <span>{Math.round(1 / formData[parent]?.[colIndex]?.[rowIndex] || 1)}</span>
+                <span>{(1 / formData[parent]?.[colIndex]?.[rowIndex] || 1).toFixed(2)}</span>
               ) : (
                 <select
                   className="border  border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
