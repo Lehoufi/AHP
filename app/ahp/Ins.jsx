@@ -14,7 +14,18 @@ export default function InteractiveTree() {
   const [alternatives, setAlternatives] = useState(['']);
   const [isFinished, setIsFinished] = useState(false); 
   const [isstarted, setisstarted] = useState(false); 
+  const [error, setError] = useState('');
+
   const handleFinish = () => {
+    const nonEmptyAlternatives = alternatives.filter(alt => alt.trim() !== '');
+  
+    if (nonEmptyAlternatives.length <= 1) {
+      setError('Please enter at least 2  alternatives');
+      return; // Stop the function execution if validation fails
+    } else {
+      setError(''); // Clear any previous errors
+    }
+  
     console.log('Finished! Logging entire tree structure:', treeData);
     console.log('Alternatives entered:', alternatives);
   
@@ -31,7 +42,7 @@ export default function InteractiveTree() {
           addLevelToTree(node.children, currentLevel + 1);
         } else {
           // If it's the last level, add alternatives
-          alternatives.forEach((alternative) => {
+          nonEmptyAlternatives.forEach((alternative) => {
             node.children = node.children || []; // Ensure the 'children' array exists
             node.children.push({ name: alternative.trim(), level: currentLevel + 1 });
           });
@@ -49,6 +60,8 @@ export default function InteractiveTree() {
     setIsAlternativesModalOpen(false);
     setIsFinished(true); // Mark as finished
   };
+  
+  
   
   
   
@@ -114,79 +127,83 @@ export default function InteractiveTree() {
   };
 
   const renderCustomNode = ({ nodeDatum }) => {
-    const rectWidth = 70;
-    const rectHeight = 30;
+    const textPadding = 30; // Increased padding for better spacing
+    const rectHeight = 40; // Increased height for better visibility
+    const textLength = nodeDatum.name.length; // Length of the node's name
+    const rectWidth = Math.max(textLength * 19 + textPadding, 120); // Adjust width based on text length with a minimum width of 100
     const rectX = -rectWidth / 2; // Center the rectangle horizontally
     const rectY = -rectHeight / 2; // Center the rectangle vertically
 
     return (
-      <g>
-        {/* Rectangle (node background) */}
-        <motion.rect
-          x={rectX}
-          y={rectY}
-          width={rectWidth}
-          height={rectHeight}
-          rx="10"
-          ry="10"
-          fill="lightblue"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        />
+        <g>
+            {/* Rectangle (node background) */}
+            <motion.rect
+                x={rectX}
+                y={rectY}
+                width={rectWidth}
+                height={rectHeight}
+                rx="12"
+                ry="12"
+                fill="#7BD3EA"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+            />
 
-        {/* Node name (text) */}
-        <motion.text
-          x="0"
-          y="2" // Center the text vertically within the rectangle
-          textAnchor="middle"
-          alignmentBaseline="middle"
-          style={{ fontSize: '18px', fill: 'black' }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          {nodeDatum.name}
-        </motion.text>
-
-        {/* Remove node button */}
-        {nodeDatum.name !== 'Goal' && (
-          <foreignObject x="-0" y={rectY - 20} width="40" height="40">
-            <button
-              onClick={() => removeNode(nodeDatum)}
-              style={{
-                backgroundColor: 'white',
-                color: 'white',
-                borderRadius: '5px',
-                border: 'none',
-                cursor: 'pointer',
-                width: '20px',
-                height: '20px',
-              }}
+            {/* Node name (text) */}
+            <motion.text
+                x="0"
+                y="3" // Center the text vertically within the rectangle
+                textAnchor="middle"
+                alignmentBaseline="middle"
+                style={{ fontSize: '30px', fill: 'black', fontWeight: 'normal' }} // Increased font size and added bold style
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
             >
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ff0000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.17065 4C9.58249 2.83481 10.6937 2 11.9999 2C13.3062 2 14.4174 2.83481 14.8292 4" stroke="#ff0000" strokeWidth="1.5" strokeLinecap="round"></path> <path d="M20.5 6H3.49988" stroke="#ff0000" strokeWidth="1.5" strokeLinecap="round"></path> <path d="M18.3735 15.3991C18.1965 18.054 18.108 19.3815 17.243 20.1907C16.378 21 15.0476 21 12.3868 21H11.6134C8.9526 21 7.6222 21 6.75719 20.1907C5.89218 19.3815 5.80368 18.054 5.62669 15.3991L5.16675 8.5M18.8334 8.5L18.6334 11.5" stroke="#ff0000" strokeWidth="1.5" strokeLinecap="round"></path> <path d="M9.5 11L10 16" stroke="#ff0000" strokeWidth="1.5" strokeLinecap="round"></path> <path d="M14.5 11L14 16" stroke="#ff0000" strokeWidth="1.5" strokeLinecap="round"></path> </g></svg>
-            </button>
-          </foreignObject>
-        )}
+                {nodeDatum.name}
+            </motion.text>
 
-        {/* Add node button */}
-        <foreignObject x={rectWidth / 2 - 10} y={rectY - 20} width="20" height="20">
-          <button
-            onClick={() => openModal(nodeDatum)}
-            style={{
-              borderRadius: '5px',
-              border: 'none',
-              cursor: 'pointer',
-              width: '20px',
-              height: '20px',
-            }}
-          >
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12.75 9C12.75 8.58579 12.4142 8.25 12 8.25C11.5858 8.25 11.25 8.58579 11.25 9L11.25 11.25H9C8.58579 11.25 8.25 11.5858 8.25 12C8.25 12.4142 8.58579 12.75 9 12.75H11.25V15C11.25 15.4142 11.5858 15.75 12 15.75C12.4142 15.75 12.75 15.4142 12.75 15L12.75 12.75H15C15.4142 12.75 15.75 12.4142 15.75 12C15.75 11.5858 15.4142 11.25 15 11.25H12.75V9Z" fill="#00ff2a"></path> </g></svg>
-          </button>
-        </foreignObject>
-      </g>
+            {/* Remove node button */}
+            {nodeDatum.name !== 'Goal' && (
+                <foreignObject x={rectX + rectWidth - 43} y={rectY - 22} width="40" height="40">
+                    <button
+                        onClick={() => removeNode(nodeDatum)}
+                        style={{
+                            backgroundColor: 'white',
+                            color: 'white',
+                            borderRadius: '5px',
+                            border: 'none',
+                            cursor: 'pointer',
+                            width: '20px',
+                            height: '20px',
+                        }}
+                    >
+                       <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#ff0000" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zM288 512a38.4 38.4 0 0 0 38.4 38.4h371.2a38.4 38.4 0 0 0 0-76.8H326.4A38.4 38.4 0 0 0 288 512z"></path></g></svg>
+                    </button>
+                </foreignObject>
+            )}
+
+            {/* Add node button */}
+            <foreignObject x={rectX + rectWidth - 20} y={rectY - 22} width="30" height="30">
+                <button
+                    onClick={() => openModal(nodeDatum)}
+                    style={{
+                        borderRadius: '5px',
+                        border: 'none',
+                        cursor: 'pointer',
+                        width: '22px',
+                        height: '22px',
+                    }}
+                >
+                   <svg viewBox="0 0 1024 1024" className="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#0BDA51"></path><path d="M448 298.666667h128v426.666666h-128z" fill="#FFFFFF"></path><path d="M298.666667 448h426.666666v128H298.666667z" fill="#FFFFFF"></path></g></svg>
+                </button>
+            </foreignObject>
+        </g>
     );
-  };
+};
+
+
 
   const handleNextClick = () => {
     setIsAlternativesModalOpen(true);
@@ -213,7 +230,7 @@ export default function InteractiveTree() {
                 zoomable
                 collapsible
                 nodeSize={{ x: 140, y: 100 }}
-                separation={{ siblings: 1, nonSiblings: 2 }}
+                separation={{ siblings: 2, nonSiblings: 2 }}
                 pathFunc={(linkData, orientation) => {
                   const { source, target } = linkData;
                   if (orientation === 'vertical') {
@@ -266,23 +283,12 @@ export default function InteractiveTree() {
         {/* Criteria Modal */}
         {isCriteriaModalOpen && (
           <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
-            <div className="mx-auto max-w-lg rounded-lg border border-stone bg-stone-100 p-4 shadow-lg sm:p-6 lg:p-8">
+            <div className="mx-auto w-[32rem] rounded-lg border border-stone bg-stone-100 p-4 shadow-lg sm:p-6 lg:p-8">
               <div className="flex items-center gap-4">
-                <span className="shrink-0 rounded-full bg-emerald-400 p-2 text-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
+                <span className=" rounded-full  text-white">
+                <svg className='w-7' viewBox="0 0 1024 1024"  version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#0BDA51"></path><path d="M448 298.666667h128v426.666666h-128z" fill="#FFFFFF"></path><path d="M298.666667 448h426.666666v128H298.666667z" fill="#FFFFFF"></path></g></svg>
                 </span>
-                <p className="font-medium sm:text-lg text-emerald-600">Add Criterias</p>
+                <p className="font-medium sm:text-lg text-black">Add Criterias</p>
               </div>
   
               <p className="mt-4 text-gray-600">Enter the names :</p>
@@ -291,13 +297,14 @@ export default function InteractiveTree() {
                   key={index}
                   type="text"
                   value={criterion}
+                  required
                   onChange={(e) => {
                     const newCriteria = [...criteria];
                     newCriteria[index] = e.target.value;
                     setCriteria(newCriteria);
                   }}
                   className="w-full p-3 bg-gray-100 border text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 placeholder-gray-400 mb-4 transition-all"
-                  placeholder={`Node name ${index + 1}`}
+                  placeholder={`Criteria name ${index + 1}`}
                 />
               ))}
               <button
@@ -317,7 +324,7 @@ export default function InteractiveTree() {
         <div className="relative z-10 flex items-center space-x-2">
           <span className="transition-all duration-500 group-hover:translate-x-1"
             >Add </span>
-       <svg             className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-1"
+       <svg             className="w-7  transition-transform duration-500 group-hover:translate-x-1"
  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="#fcfcfc" strokeWidth="1.5" strokeLinecap="round"></path> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#fcfcfc" strokeWidth="1.5" strokeLinecap="round"></path> </g></svg>
         </div>
       </span>
@@ -336,7 +343,7 @@ export default function InteractiveTree() {
         {/* Alternatives Modal */}
         {isAlternativesModalOpen && (
           <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex justify-center items-center">
-            <div className="mx-auto max-w-lg rounded-lg border border-blue-600 bg-white p-4 shadow-lg sm:p-6 lg:p-8">
+            <div className="mx-auto w-[32rem] rounded-lg border border-blue-600 bg-white p-4 shadow-lg sm:p-6 lg:p-8">
               <div className="flex items-center gap-4">
                 <span className="shrink-0 rounded-full bg-blue-400 p-2 text-white">
                   <svg
@@ -376,7 +383,9 @@ export default function InteractiveTree() {
               >
                 Add another alternative
               </button>
-  
+            
+              {error && <p className="text-red-600 mt-2">{error}</p>} {/* Show error message */}
+
               <div className="mt-6 sm:flex sm:gap-4">
               <button
                                 onClick={handleFinish}
@@ -392,6 +401,12 @@ export default function InteractiveTree() {
         </div>
       </span>
     </button>
+    <button
+                  onClick={() => setIsAlternativesModalOpen(false)}
+                  className="mt-2 inline-block w-full rounded-lg bg-stone-300 px-5 py-3 text-center text-sm font-semibold text-gray-800 sm:mt-0 sm:w-auto"
+                >
+                  Dismiss
+                </button>
               </div>
             </div>
           </div>
