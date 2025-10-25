@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AHP Project
 
-## Getting Started
+This project is an **AHP (Analytic Hierarchy Process) application** designed to help in decision-making.  
+It has a **frontend** built with **Next.js** and a **backend** built with **Python**.
 
-First, run the development server:
+---
+
+## Clone the Repository
+
+To get started, clone the repository and navigate into it:
 
 ```bash
+git clone https://github.com/Lehoufi/ahp.git
+cd ahp
+
+
+Frontend Setup (Next.js)
+
+Go to the frontend folder.
+
+Install dependencies:
+
+npm install
+
+
+Run the development server:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Open your browser at:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+http://localhost:3000
 
-## Learn More
+Backend Setup (Python)
 
-To learn more about Next.js, take a look at the following resources:
+Go to the backend folder (ahp_backend).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a virtual environment:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+python -m venv venv
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Activate the virtual environment:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+PowerShell:
+
+.\venv\Scripts\Activate.ps1
+
+
+Command Prompt:
+
+venv\Scripts\activate
+
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+
+Run the backend:
+
+python app.py
+
+
+Make sure the backend is running before using the frontend if it depends on the API.
+
+Project Purpose
+
+This project helps users perform structured decision-making using the AHP methodology, providing a clear framework for comparing alternatives and making informed decisions.
